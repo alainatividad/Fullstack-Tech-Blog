@@ -28,7 +28,7 @@ Comment.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
-    user_id: {
+    user_post: {
       type: DataTypes.INTEGER,
       references: {
         Model: User,

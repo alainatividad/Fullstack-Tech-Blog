@@ -21,6 +21,15 @@ Comment.belongsTo(Post, {
   foreignKey: "post_id",
 });
 
+// One to many association of Post and Comment (1 Post to many comments)
+User.hasMany(Comment, {
+  foreignKey: "user_post",
+});
+
+Comment.belongsTo(User, {
+  foreignKey: "user_post",
+});
+
 module.exports = {
   User,
   Post,
