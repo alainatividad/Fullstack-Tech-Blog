@@ -34,7 +34,7 @@
         <ul class="nav nav-pills">
           <li class="nav-item">
             <a
-              href="#"
+              href="/"
               class="nav-link active"
               style="background-color: #1c97cf"
               aria-current="page"
@@ -42,8 +42,8 @@
             >
           </li>
           <li class="nav-item"><a href="#" class="nav-link">Dashboard</a></li>
-          {{#if logged_in}}
-          <li class="nav-item logout"><a href="/logout" class="nav-link">Log out</a></li>
+          {{#if loggedIn}}
+          <button id="logout" class="btn btn-light">Logout</button>
           {{else}}
           <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
           <li class="nav-item"><a href="/signup" class="nav-link">Sign Up</a></li>
@@ -62,7 +62,7 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-    {{#if logged_in}}
+    {{#if loggedIn}}
     <script src="/js/logout.js"></script>
     {{/if}}
   </body>

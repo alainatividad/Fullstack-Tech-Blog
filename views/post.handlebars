@@ -1,0 +1,40 @@
+      <div class="container-fluid">
+        <div class="col">
+          <div class="card" data-post="{{posts.id}}">
+            <div class="card-header" style="background-color: #1c97cf">
+                <span class="fs-3"><strong>{{posts.title}}</strong></span>
+                <br>
+                <span class="text-end fs-6">Posted by {{posts.user.name}} on {{format_date  posts.date_created}}</span>
+            </div>
+          <div class="card-body">
+            {{posts.content}}
+          </div>
+          </div>
+        </div>
+        <hr>
+        {{!-- if button clicked and authenticated, show textbox else show comments if any --}}
+        {{#if btnClicked}}
+        <div class="card comment" data-post="{{posts.id}}">
+        <div class="card-header" style="background-color: #1c97cf">
+          Add a Comment
+        </div>
+        <form>
+          <div class="mb-3">
+            <textarea class="form-control text-break" id="content" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary post-comment">Submit</button>
+        </form>
+        </div>
+        
+        <script src="/js/comment.js"></script>
+        {{else}}
+        <div class="m-2 justify-content-around justify-content-center">
+          <a href="/post/comment/{{posts.id}}">Create a comment</a>
+        </div>
+        {{/if}}
+        {{#each posts.comments as |comment|}}
+        {{> comment}}
+        {{/each}}
+      </div>
+      
+      
