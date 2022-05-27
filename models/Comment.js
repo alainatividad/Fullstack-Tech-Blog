@@ -18,11 +18,7 @@ Comment.init(
       autoIncrement: true,
     },
     content: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-      validate: {
-        isDecimal: true,
-      },
+      type: DataTypes.TEXT,
     },
     date_created: {
       type: DataTypes.DATE,
