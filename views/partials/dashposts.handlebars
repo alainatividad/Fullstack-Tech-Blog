@@ -1,0 +1,19 @@
+{{#each dashPosts as |post|}}
+<div class="col">
+  <div class="card m-3 post" data-post="{{post.id}}">
+    <div class="card-header" style="background-color: #66b0d2">
+        <button class="btn fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{post.id}}" aria-expanded="false" aria-controls="collapse-{{post.id}}">
+          {{post.title}}
+        </button>
+        <br>
+        <span class="text-end fs-6">Posted on {{format_date post.date_created}}</span>
+    </div>
+    <div class="card-body collapse" id="collapse-{{post.id}}">
+      <textarea class="form-control text-break" id="content" rows="3">{{post.content}}</textarea>
+      <hr>
+      <button type="submit" class="btn btn-primary update-post" data-post="{{post.id}}">Update Post</button>
+      <button type="delete" class="btn btn-primary delete-post" data-post="{{post.id}}">Delete Post</button>
+    </div>
+  </div>
+</div>
+{{/each}}
