@@ -14,8 +14,10 @@ const loginFormHandler = async (event) => {
     });
 
     if (response.ok) {
+      // redirect to homepage if email and password are correct
       document.location.replace("/");
     } else {
+      // alert the user if either email or password is incorrect
       alert("Failed to log in");
     }
   }
