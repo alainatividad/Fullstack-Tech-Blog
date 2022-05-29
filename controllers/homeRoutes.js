@@ -6,6 +6,7 @@ const checkAuth = require("../utils/authenticate");
 
 router.get("/", async (req, res) => {
   try {
+    // get all records in the Post table
     const postData = await Post.findAll({
       include: [
         {
@@ -16,9 +17,10 @@ router.get("/", async (req, res) => {
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
-    console.log("get /");
 
     // Send the rendered Handlebars.js template back as the response
+    // pass loggedIn status to either show the login and signup links or the logout button
+    // pass dashPage status to highlight the correct page
     res.render("homepage", {
       posts,
       loggedIn: req.session.loggedIn,
@@ -32,6 +34,7 @@ router.get("/", async (req, res) => {
 
 router.get("/post/:id", async (req, res) => {
   try {
+    // If the View Comment under each post is clicked, get the post and comments related to that post
     const postData = await Post.findByPk(req.params.id, {
       include: [
         {
@@ -51,17 +54,14 @@ router.get("/post/:id", async (req, res) => {
         },
       ],
     });
-    // const posts = postData.map((post) => post.get({ plain: true }));
+
     const posts = postData.get({ plain: true });
-    console.log("get /post/id");
-    // console.log(posts);
-    // console.log("----------------------");
-    // console.log(JSON.parse(JSON.stringify(posts.comments)));
-    // Send the rendered Handlebars.js template back as the response
+
+    // render the specific post page that would show the post, either an add a comment button or links to login/signup, and comments under it if any
+    // pass loggedIn to show either Login/Signup or Logout on the navigation bar
     res.render("post", {
       posts,
       loggedIn: req.session.loggedIn,
-      btnClicked: false,
       dashPage: false,
     });
   } catch (error) {
@@ -70,12 +70,18 @@ router.get("/post/:id", async (req, res) => {
   }
 });
 
+// route for clicking the dashboard link on the navigation page
+// we'll run a middleware first so that if the user is not loggedIn (there is no stored sessionId), the user is redirected to the login page
+// but if the user is logged in, redirect the route to /api/user/dashboard
 router.get("/dashboard", checkAuth, (req, res) => {
   console.log("get /dashboard");
+  // redirect the call to /api/users/dashboard
   res.redirect("/api/users/dashboard");
-  // res.render("dashboard");
 });
 
+// route for logging in
+// check if the user is logged in or not
+// if loggedin, go to homepage else load login handlebars
 router.get("/login", (req, res) => {
   console.log("get /login");
   if (req.session.loggedIn) {
@@ -89,6 +95,8 @@ router.get("/login", (req, res) => {
   });
 });
 
+// route for signing up
+// if the user is loggedIn, redirect to homepage else load signup handlebars
 router.get("/signup", (req, res) => {
   console.log("get /signup");
   if (req.session.loggedIn) {

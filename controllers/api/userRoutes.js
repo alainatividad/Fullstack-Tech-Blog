@@ -7,6 +7,7 @@ const checkAuth = require("../../utils/authenticate");
 // route for signing up
 router.post("/", async (req, res) => {
   try {
+    // create new entry in user table
     console.log("get /api/user/");
     const userData = await User.create({
       name: req.body.name,
@@ -14,6 +15,7 @@ router.post("/", async (req, res) => {
       password: req.body.password,
     });
 
+    // save user.id and set loggedIn status to true
     req.session.save(() => {
       req.session.userId = userData.id;
       req.session.loggedIn = true;
@@ -28,6 +30,7 @@ router.post("/", async (req, res) => {
 // route for logging in
 router.post("/login", async (req, res) => {
   try {
+    // check if credentials are correct. first is the email
     const userData = await User.findOne({ where: { email: req.body.email } });
 
     if (!userData) {
@@ -37,6 +40,7 @@ router.post("/login", async (req, res) => {
       return;
     }
 
+    // check if password is correct
     const validPassword = await userData.checkPassword(req.body.password);
 
     if (!validPassword) {
@@ -46,6 +50,7 @@ router.post("/login", async (req, res) => {
       return;
     }
 
+    // save user.id and set loggedIn status to true
     req.session.save(() => {
       req.session.userId = userData.id;
       req.session.loggedIn = true;
@@ -61,6 +66,7 @@ router.post("/login", async (req, res) => {
 // route for logging out
 router.post("/logout", (req, res) => {
   console.log("get /api/user/logout");
+  // delete session if logging out
   if (req.session.loggedIn) {
     req.session.destroy(() => {
       res.status(204).end();
@@ -70,10 +76,12 @@ router.post("/logout", (req, res) => {
   }
 });
 
-// route for posting a comment
+// route for posting a comment. decided to put it under userRoutes since you should only be able to post a comment if you're logged in
+// but still, run middleware checkAuth before doing anything to check if the user is logged in
 router.post("/comment", checkAuth, async (req, res) => {
   try {
     console.log("get /api/user/comment");
+    // create a new record in the Comment table using the req.body entries, current sessionId and the current date
     const commentData = await Comment.create({
       content: req.body.content,
       post_id: req.body.postId,
@@ -92,6 +100,7 @@ router.post("/comment", checkAuth, async (req, res) => {
 router.get("/dashboard", async (req, res) => {
   try {
     console.log("get /api/user/dashboard");
+    // get all posts for the loggedIn's userId
     const dashboardData = await Post.findAll({
       where: {
         user_id: req.session.userId,
@@ -105,7 +114,9 @@ router.get("/dashboard", async (req, res) => {
       ],
     });
 
-    //user has posts
+    // if user has posts, the handlebars would run the partials dashposts
+    // pass the loggedIn status so that the Logout button would show
+    // pas the dashPage status so that Dashboard is highlighted on the navigation bar
     if (dashboardData) {
       const dashPosts = dashboardData.map((post) => post.get({ plain: true }));
       res.render("dashboard", {
@@ -115,6 +126,7 @@ router.get("/dashboard", async (req, res) => {
         dashPage: true,
       });
     } else {
+      // if user doesn't have a post, just show the button for adding a new post
       res.render("dashboard", {
         hasData: false,
         loggedIn: req.session.loggedIn,
@@ -131,6 +143,7 @@ router.get("/dashboard", async (req, res) => {
 router.post("/post", checkAuth, async (req, res) => {
   try {
     console.log("post /api/user/post");
+    // create new record in the Post table using the req.body entris, sessionId, and current date
     const postData = await Post.create({
       content: req.body.content,
       title: req.body.title,
@@ -149,6 +162,7 @@ router.post("/post", checkAuth, async (req, res) => {
 router.put("/post/:id", checkAuth, async (req, res) => {
   try {
     console.log("put /api/user/post");
+    // update record on the Post table for the specific postId
     const postData = await Post.update(
       {
         content: req.body.content,
@@ -174,6 +188,7 @@ router.put("/post/:id", checkAuth, async (req, res) => {
 router.delete("/post/:id", checkAuth, async (req, res) => {
   try {
     console.log("delete /api/user/post/id");
+    // delete post
     const postData = await Post.destroy({
       where: {
         id: req.params.id,
@@ -193,6 +208,7 @@ router.delete("/post/:id", checkAuth, async (req, res) => {
 // route for logging out
 router.get("/logout", (req, res) => {
   console.log("get /logout");
+  // delete session and redirect to homepage
   if (req.session.loggedIn) {
     req.session.destroy(() => {
       res.status(204).end();
