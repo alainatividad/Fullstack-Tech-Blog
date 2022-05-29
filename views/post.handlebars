@@ -1,5 +1,6 @@
       <div class="container-fluid">
         <div class="col">
+          {{!-- use a card to show the post and the comments, and hold the comment textbox --}}
           <div class="card" data-post="{{posts.id}}">
             <div class="card-header" style="background-color: #1c97cf">
                 <span class="fs-3"><strong>{{posts.title}}</strong></span>
@@ -12,7 +13,7 @@
           </div>
         </div>
         <hr>
-        {{!-- if button clicked and authenticated, show textbox and show comments below it if any --}}
+        {{!-- if button clicked, show textbox and show comments below it if any --}}
         {{#if loggedIn}}
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-new-comment" aria-expanded="false" aria-controls="collapse-new-comment">+ Add a Comment</button>
         <div class="card comment collapse" id="collapse-new-comment" data-post="{{posts.id}}">
@@ -29,8 +30,10 @@
         
         <script src="/js/comment.js"></script>
         {{else}}
+        {{!-- else show links for login and sign up --}}
         <a href="/login">Login</a> or <a href="/signup">Sign up</a> to comment
         {{/if}}
+        {{!-- run partials for the comments --}}
         {{#each posts.comments as |comment|}}
         {{> comment}}
         {{/each}}
