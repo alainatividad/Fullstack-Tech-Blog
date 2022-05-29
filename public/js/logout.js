@@ -1,3 +1,4 @@
+// create a post request to /api/users/logout when the logout button is clicked
 const logout = async () => {
   const response = await fetch("/api/users/logout", {
     method: "POST",

@@ -1,3 +1,4 @@
+// create a post request to /api/users/login when clicking the submit button on the login page
 const loginFormHandler = async (event) => {
   event.preventDefault();
 
@@ -5,7 +6,6 @@ const loginFormHandler = async (event) => {
   const password = document.querySelector("#password-login").value.trim();
 
   if (email && password) {
-    // alert("Login!");
     const response = await fetch("/api/users/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
