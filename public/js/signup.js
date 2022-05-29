@@ -6,7 +6,7 @@ const signUpFormHandler = async (event) => {
   const password = document.querySelector("#password-signup").value.trim();
 
   if (name && email && password) {
-    // alert("signup!");
+    // create a post request with the details entered
     const response = await fetch("/api/users/", {
       method: "POST",
       body: JSON.stringify({ name, email, password }),
@@ -14,13 +14,16 @@ const signUpFormHandler = async (event) => {
     });
 
     if (response.ok) {
+      // redirect to homepage
       document.location.replace("/");
     } else {
-      alert("Failed to log in");
+      //  alert user if request has failed
+      alert("Failed to sign in");
     }
   }
 };
 
+// event listener for the submit button
 document
   .querySelector(".signup-form")
   .addEventListener("submit", signUpFormHandler);
