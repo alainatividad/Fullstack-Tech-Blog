@@ -14,12 +14,14 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 //setup session cookies
-// cookie to expire after 1 hour
+// cookie to expire after 10mins
 const sess = {
   secret: process.env.secret,
-  cookie: {},
+  cookie: {
+    maxAge: 60000,
+    httpOnly: true,
+  },
   resave: false,
-  maxAge: 3600000,
   saveUninitialized: true,
   store: new SequelizeStore({
     db: sequelize,
