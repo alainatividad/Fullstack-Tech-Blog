@@ -1,0 +1,27 @@
+
+<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-new-post" aria-expanded="false" aria-controls="collapse-new-post">
++ Add Post
+</button>
+<div class="card m-2 collapse" id="collapse-new-post">
+  <div class="card-header">New Post</div>
+    <div class="card-body">
+      <form>
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="title">
+        </div>
+        <div class="mb-3">
+          <textarea class="form-control text-break" id="content" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary new-post">Submit</button>
+      </form>
+    </div>
+  </div>
+  {{!-- If user has posts, show them else just show a button --}}
+{{#if hasData}}
+<div class="container-fluid posts">
+{{> dashposts}}
+</div>
+{{/if}}
+</div>
+<script src="/js/dashboard.js"></script>
