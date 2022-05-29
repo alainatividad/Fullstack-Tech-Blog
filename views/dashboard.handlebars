@@ -1,8 +1,9 @@
-
+{{!-- button for adding a post --}}
 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-new-post" aria-expanded="false" aria-controls="collapse-new-post">
 + Add Post
 </button>
 <div class="card m-2 collapse" id="collapse-new-post">
+  {{!-- show a card for the textboxes for the title and content of the post --}}
   <div class="card-header">New Post</div>
     <div class="card-body">
       <form>
@@ -17,9 +18,10 @@
       </form>
     </div>
   </div>
-  {{!-- If user has posts, show them else just show a button --}}
+  {{!-- If user has posts, run dashposts partials else just show a button --}}
 {{#if hasData}}
 <div class="container-fluid posts">
+  {{!-- contain posts in a div class = posts so that we have an element that we could listen for click events --}}
 {{> dashposts}}
 </div>
 {{/if}}
