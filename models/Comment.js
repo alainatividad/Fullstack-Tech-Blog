@@ -2,6 +2,7 @@
 const { Model, DataTypes } = require("sequelize");
 // import our database connection from config.js
 const sequelize = require("../config/connection");
+// import the two other tables since we're linking it to this table as foreign keys
 const User = require("./User");
 const Post = require("./Post");
 
